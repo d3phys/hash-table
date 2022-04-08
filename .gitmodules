@@ -1,3 +1,6 @@
 [submodule "list"]
 	path = list
 	url = https://github.com/d3phys/list.git
+[submodule "logs"]
+	path = logs
+	url = https://github.com/d3phys/logs.git

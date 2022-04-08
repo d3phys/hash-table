@@ -52,9 +52,9 @@ TXFLAGS =  -g --static-pie -std=c++14 -fmax-errors=100 -Wall -Wextra       \
 	   -fsanitize=vptr                                                 \
 	   -lm -pie                                          
 
-CXXFLAGS = -D 'LOGS_FILE="logs.html"' -DLOGS_MEMORY $(TXFLAGS)
+CXXFLAGS = -DLOGS_MEMORY $(TXFLAGS)
 
-SUBDIRS = lib
+SUBDIRS = logs
 
 CXX = g++
 CPP = $(CXX) -E 
@@ -64,19 +64,20 @@ TOPDIR	:= $(shell if [ "$$PWD" != "" ]; then echo $$PWD; else pwd; fi)
 #
 # Header files
 #
-HPATH  = $(TOPDIR)/include
+HPATH  = $(TOPDIR)/include $(TOPDIR)/logs
 
 BUILD = build
 
 OBJS  = main.o
-make: subdirs $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $(BUILD)/build $(addprefix $(BUILD)/,$(OBJS)) lib/lib.o
+make: subdirs $(OBJS) 
+	$(CXX) $(CXXFLAGS) -o $(BUILD)/build $(addprefix $(BUILD)/,$(OBJS)) logs/logs.o
 	$(BUILD)/build
 
 
-.EXPORT_ALL_VARIABLES: CXX CXXFLAGS CPP
+LOGS = logs.html
+.EXPORT_ALL_VARIABLES: CXX CXXFLAGS CPP LOGS
 
 include $(TOPDIR)/Rules.makefile
 
 ### Dependencies ###
-main.o: main.cpp /home/d3phys/Code/hash-table/include/logs.h
+main.o: main.cpp

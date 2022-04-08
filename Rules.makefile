@@ -32,4 +32,4 @@ dep:
 # Common rules
 #
 %.o : %.cpp
-	$(CXX) $(CXXFLAGS) -c -I$(HPATH) $< -o $(BUILD)/$@
+	$(CXX) $(CXXFLAGS) -c $(addprefix -I, $(HPATH)) $< -o $(BUILD)/$@
