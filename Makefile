@@ -52,7 +52,8 @@ TXFLAGS =  -g --static-pie -std=c++14 -fmax-errors=100 -Wall -Wextra       \
 	   -fsanitize=vptr                                                 \
 	   -lm -pie                                          
 
-CXXFLAGS = -D LOGS_MEMORY -D DEBUG -D LOGS_COLORS $(TXFLAGS)
+CXXFLAGS = -D LOGS_COLORS $(TXFLAGS)
+#CXXFLAGS +=  -D LOGS_MEMORY -D DEBUG 
 
 SUBDIRS = logs list ht io
 

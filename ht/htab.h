@@ -6,6 +6,8 @@
 typedef unsigned char hash_t;
 
 hash_t         one_hash(hkey key);
+hash_t         ror_hash(hkey key);
+hash_t      length_hash(hkey key);
 hash_t   sum_ascii_hash(hkey key);
 hash_t first_ascii_hash(hkey key);
 
@@ -19,7 +21,7 @@ htab *htab_dtor(htab *const ht);
 
 hrec *htab_insert(htab *const ht, hrec rec);
 hrec *htab_delete(htab *const ht, hkey key);
-hrec *htab_find(htab *const ht, hkey key, hash_t *slot);
+hrec *htab_find(htab *const ht, hkey key, hash_t *slot = nullptr);
 
 void htab_dump(htab *const ht, hash_t from = 0, hash_t count = (hash_t)-1);
 

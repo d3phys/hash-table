@@ -20,30 +20,30 @@ htab *htab_ctor(htab *const ht, hash_t (* hfunc)(hkey), const size_t init_cap)
         assert(hfunc);  
         int saved_errno = 0;
 
-        const hash_t n_recs = (hash_t)(-1);
-        fprintf(stderr, "CHAR: %d\n", (int)n_recs);
+        fprintf(stderr, "CHAR: %ld\n", (hash_t)(-1) + 1);
         
-        list *slots = (list *)calloc(n_recs, sizeof(list));
+        list *slots = (list *)calloc((hash_t)(-1) + 1, sizeof(list));
         if (!slots) {
                 plogs("Hash table slots allocation fail: %s\n", strerror(errno));
                 return nullptr;
         }
 
-        for (hash_t i = 0; i < n_recs; i++) {
+        hash_t i = 0; 
+        do {
                 list *lst = construct_list(slots + i, init_cap);
                 if (!lst) {
                         saved_errno = errno;
                         plogs("Hash list %d allocation fail: %s\n", i, strerror(errno));
 
-                        for (; i > 0; i--)
+                        while (i--)
                                 destruct_list(slots + i);
                                 
                         free(slots);
                         
                         errno = saved_errno;
                         return nullptr;
-                }
-        }
+                }                
+        } while (++i);
 
         ht->slots = slots;
         ht->hfunc = hfunc;
@@ -55,9 +55,12 @@ htab *htab_dtor(htab *const ht)
         assert(ht);
 
         list *slots = ht->slots;
-        for (hash_t i = 0; i < (hash_t)(-1); i++)
-                destruct_list(slots + i);
-                
+
+        hash_t i = 0;
+        do { 
+                destruct_list(slots + i); 
+        } while (++i);
+        
         free(slots);
 
         ht->slots = nullptr;
@@ -88,8 +91,10 @@ hrec *htab_find(htab *const ht, hkey key, hash_t *slot)
         ptrdiff_t found = list_find(ht->slots + indx, {key, (hval) nullptr});
         if (!found)
                 return nullptr;
-                
-        *slot = indx;       
+
+        if (slot)     
+                *slot = indx;
+                       
         return &ht->slots[indx].nodes[found].data;
 }
 

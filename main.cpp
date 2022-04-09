@@ -46,7 +46,7 @@ int main(int argc, const char *argv[])
                 return EXIT_FAILURE;
         }
 
-        size_t *freq = (size_t *)calloc((hash_t)-1, sizeof(size_t));
+        size_t *freq = (size_t *)calloc((hash_t)(-1) + 1, sizeof(size_t));
         if (!freq) {
                 fprintf(stderr, "Frequency table allocation failed: %s\n", strerror(errno));
                 fclose(dest);
@@ -54,10 +54,22 @@ int main(int argc, const char *argv[])
                 mmap_free(&md);
                 return EXIT_FAILURE;
         }
+        
+        fprintf(dest, "index");
+        
+        hash_t s = 0;
+        do {
+                fprintf(dest, ",%lu", s);
+        } while (++s);
+        
+        fprintf(dest, "\n");
 
         analyze_hash(dest, freq, words, n_words, &first_ascii_hash, "first_ascii_hash");
         analyze_hash(dest, freq, words, n_words,         &one_hash,         "one_hash");
-
+        analyze_hash(dest, freq, words, n_words,   &sum_ascii_hash,   "sum_ascii_hash");
+        analyze_hash(dest, freq, words, n_words,         &ror_hash,         "ror_hash");
+        analyze_hash(dest, freq, words, n_words,      &length_hash,      "length_hash");
+        
         fclose(dest);
         free(freq);
         free(words);
@@ -81,21 +93,15 @@ static int analyze_hash(
                 return EXIT_FAILURE;       
         
         for (size_t w = 0; w < n_words; w++)
-                htab_insert(&ht, {words[w], nullptr});
-
-        hash_t slot = 0;
-        for (size_t w = 0; w < n_words; w++) {
-                if (!htab_find(&ht, words[w], &slot)) {
-                        fprintf(stderr, "NOT FOUND\n");
-                        continue;
-                }
-                        
-                freq[slot]++;                
-        }
+                if (!htab_find(&ht, words[w]))
+                        htab_insert(&ht, {words[w], nullptr});
 
         fprintf(file, "%s", label);
-        for (hash_t s = 0; s < (hash_t)-1; s++)
-                fprintf(file, " %lu", freq[s]);
+
+        hash_t s = 0;
+        do {
+                fprintf(file, ",%lu", ht.slots[s].n_nodes);
+        } while (++s);
 
         fprintf(file, "\n");    
         htab_dtor(&ht);
