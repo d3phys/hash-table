@@ -79,15 +79,17 @@ hrec *htab_insert(htab *const ht, hrec rec)
         return &ht->slots[indx].nodes[ins].data;
 }
 
-hrec *htab_find(htab *const ht, hkey key, const list **slot)
+hrec *htab_find(htab *const ht, hkey key, hash_t *slot)
 {
         assert(ht);
         assert(key);
         
         hash_t indx = ht->hfunc(key);
         ptrdiff_t found = list_find(ht->slots + indx, {key, (hval) nullptr});
-        *slot = ht->slots + indx;       
-        
+        if (!found)
+                return nullptr;
+                
+        *slot = indx;       
         return &ht->slots[indx].nodes[found].data;
 }
 
@@ -99,9 +101,10 @@ hrec *htab_delete(htab *const ht, hkey key)
         hash_t indx = ht->hfunc(key);
         
         ptrdiff_t found = list_find(ht->slots + indx, {key, (hval) nullptr});
-        if (found)
-                list_delete(ht->slots + indx, found);                   
-        
+        if (!found)
+                return nullptr;
+
+        list_delete(ht->slots + indx, found);                   
         return &ht->slots[indx].nodes[found].data;
 }
 

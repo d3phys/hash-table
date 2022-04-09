@@ -19,7 +19,7 @@ htab *htab_dtor(htab *const ht);
 
 hrec *htab_insert(htab *const ht, hrec rec);
 hrec *htab_delete(htab *const ht, hkey key);
-hrec *htab_find  (htab *const ht, hkey key, const list **slot);
+hrec *htab_find(htab *const ht, hkey key, hash_t *slot);
 
 void htab_dump(htab *const ht, hash_t from = 0, hash_t count = (hash_t)-1);
 
