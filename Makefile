@@ -52,9 +52,9 @@ TXFLAGS =  -g --static-pie -std=c++14 -fmax-errors=100 -Wall -Wextra       \
 	   -fsanitize=vptr                                                 \
 	   -lm -pie                                          
 
-CXXFLAGS = -DLOGS_MEMORY $(TXFLAGS)
+CXXFLAGS = -DLOGS_MEMORY -DDEBUG $(TXFLAGS)
 
-SUBDIRS = logs
+SUBDIRS = logs list
 
 CXX = g++
 CPP = $(CXX) -E 
@@ -64,13 +64,14 @@ TOPDIR	:= $(shell if [ "$$PWD" != "" ]; then echo $$PWD; else pwd; fi)
 #
 # Header files
 #
-HPATH  = $(TOPDIR)/include $(TOPDIR)/logs
+HPATH  = $(TOPDIR)/include $(TOPDIR)/logs $(TOPDIR)/list/include
 
 BUILD = build
 
 OBJS  = main.o
 make: subdirs $(OBJS) 
-	$(CXX) $(CXXFLAGS) -o $(BUILD)/build $(addprefix $(BUILD)/,$(OBJS)) logs/logs.o
+	@mkdir -p log
+	$(CXX) $(CXXFLAGS) -o $(BUILD)/build $(addprefix $(BUILD)/,$(OBJS)) list/list.o logs/logs.o
 	$(BUILD)/build
 
 
