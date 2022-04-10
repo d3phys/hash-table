@@ -73,7 +73,7 @@ After analyzing the figures below, we can say that
 hashes **sum_ascii_hash**, **wsum_ascii_hash** and **ror_hash** can 
 be used as 'good' hash functions.
 
-<img src="img/plot.png" alt="Hash collisions" style="height: 100px; width:100px;"/>
+<img src="img/plot.png" alt="Hash collisions" style="height: 720px; width:720px;"/>
 
 
 
