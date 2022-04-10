@@ -40,3 +40,15 @@ hash_t ror_hash(hkey key)
                 
         return hash;
 }
+
+hash_t wsum_ascii_hash(hkey key)
+{
+        assert(key);
+
+        hash_t hash = 0;
+        size_t i = 1;        
+        while (*key)
+                hash += *key++ * i++;
+                
+        return hash;
+}
