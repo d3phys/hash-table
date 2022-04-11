@@ -7,6 +7,7 @@ typedef unsigned char hash_t;
 
 hash_t         one_hash(hkey key);
 hash_t         ror_hash(hkey key);
+hash_t       crc32_hash(hkey key);
 hash_t      length_hash(hkey key);
 hash_t   sum_ascii_hash(hkey key);
 hash_t  wsum_ascii_hash(hkey key);

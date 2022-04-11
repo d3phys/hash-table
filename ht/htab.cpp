@@ -5,6 +5,7 @@
 #include <logs.h>
 #include <listtype.h>
 
+
 int compare_hrecs(hrec rec1, hrec rec2)
 {
         size_t len1 = strlen(rec1.key);

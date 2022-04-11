@@ -31,6 +31,11 @@ anal: list.o ht.o io.o logs.o
 	$(CXX) $(CXXFLAGS) -o anal init/init.o list/list.o logs/logs.o ht/ht.o io/io.o
 	./anal
 
+perf: list.o ht.o io.o logs.o
+	$(CXX) $(CXXFLAGS) -c -o init/init.o init/perf.cpp
+	$(CXX) $(CXXFLAGS) -o perf init/init.o list/list.o logs/logs.o ht/ht.o io/io.o
+	./perf
+
 %.o:
 	cd $(patsubst %.o,%, $@) && $(MAKE)
 

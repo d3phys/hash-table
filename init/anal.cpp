@@ -64,13 +64,13 @@ int main(int argc, const char *argv[])
         
         fprintf(dest, "\n");
 
-        analyze_hash(dest, freq, words, n_words, &first_ascii_hash, "first_ascii_hash");
         analyze_hash(dest, freq, words, n_words,         &one_hash,         "one_hash");
-        analyze_hash(dest, freq, words, n_words,   &sum_ascii_hash,   "sum_ascii_hash");
         analyze_hash(dest, freq, words, n_words,         &ror_hash,         "ror_hash");
+        analyze_hash(dest, freq, words, n_words,       &crc32_hash,       "crc32_hash");
         analyze_hash(dest, freq, words, n_words,      &length_hash,      "length_hash");
-        analyze_hash(dest, freq, words, n_words,  &wsum_ascii_hash,  "wsum_ascii_hash");
-        
+        analyze_hash(dest, freq, words, n_words,   &sum_ascii_hash,   "sum_ascii_hash");
+        analyze_hash(dest, freq, words, n_words, &first_ascii_hash, "first_ascii_hash");
+
         fclose(dest);
         free(freq);
         free(words);

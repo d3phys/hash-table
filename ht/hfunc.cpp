@@ -1,6 +1,25 @@
 #include <htab.h>
 #include <string.h>
 
+
+hash_t crc32_hash(hkey key) 
+{
+        unsigned int byte = 0, mask = 0;
+        unsigned int crc = 0xFFFFFFFF;
+        
+        for (int i = 0; key[i] != 0; i++) {
+                byte = key[i];
+                crc = crc ^ byte;
+                
+                for (int j = 7; j >= 0; j--) {
+                        mask = -(crc & 1);
+                        crc = (crc >> 1) ^ (0xEDB88320 & mask);
+                }
+        }
+
+        return (hash_t)(~crc);
+}
+
 hash_t one_hash(hkey key)
 {
         assert(key);
@@ -33,7 +52,6 @@ hash_t sum_ascii_hash(hkey key)
 hash_t ror_hash(hkey key)
 {
         assert(key);
-
         hash_t hash = 0;
         while (*key)
                 hash = (hash_t)((hash >> 1) | (hash << 7)) ^ *(hash_t *)key++;

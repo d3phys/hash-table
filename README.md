@@ -53,7 +53,7 @@ The hash value in this case is derived from a hash function.
 ├──────────────────┼────────────────────────────────────────────────┤
 │ wsum_ascii_hash  │ h(x) = 1*x[0] + 2*x[1] + ...                   │
 ├──────────────────┼────────────────────────────────────────────────┤
-│ custom           │ h(x)                                           │
+│ crc32_hash       │ ...                                            │
 └──────────────────┴────────────────────────────────────────────────┘
 </pre>
 
@@ -70,7 +70,7 @@ Collisions test is described on the figure below:
 </pre>                                      
 
 After analyzing the figures below, we can say that 
-hashes **sum_ascii_hash**, **wsum_ascii_hash** and **ror_hash** can 
+hashes **sum_ascii_hash**, **crc32_hash** and **ror_hash** can 
 be used as 'good' hash functions.
 
 <img src="img/plot.png" alt="Hash collisions" style="height: 720px; width:720px;"/>
