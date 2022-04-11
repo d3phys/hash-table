@@ -4,11 +4,6 @@
 # 2021, d3phys
 #
 
-OBJS  = htab.o hfunc.o
-
-ht.o: subdirs $(OBJS) 
-	$(LD) -r -o $@ $(OBJS)
-
 include $(TOPDIR)/Rules.makefile
 
 ### Dependencies ###

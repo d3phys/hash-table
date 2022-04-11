@@ -3,7 +3,7 @@
 #include <string.h>
 #include <htab.h>
 #include <logs.h>
-#include <entry.h>
+#include <listtype.h>
 
 int compare_hrecs(hrec rec1, hrec rec2)
 {

@@ -3,11 +3,11 @@
 #include <errno.h>
 #include <string.h>
 #include <list.h>
-#include <logs.h>
-#include <entry.h>
+#include <listtype.h>
 #include <htab.h>
 #include <iommap.h>
 #include <parse.h>
+#include <logs.h>
 
 static int analyze_hash(
         FILE *file, 
@@ -69,6 +69,7 @@ int main(int argc, const char *argv[])
         analyze_hash(dest, freq, words, n_words,   &sum_ascii_hash,   "sum_ascii_hash");
         analyze_hash(dest, freq, words, n_words,         &ror_hash,         "ror_hash");
         analyze_hash(dest, freq, words, n_words,      &length_hash,      "length_hash");
+        analyze_hash(dest, freq, words, n_words,  &wsum_ascii_hash,  "wsum_ascii_hash");
         
         fclose(dest);
         free(freq);

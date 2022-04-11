@@ -7,7 +7,7 @@
 OBJS  = iommap.o parse.o
 
 io.o: subdirs $(OBJS) 
-	$(LD) -r -o $@ $(addprefix $(BUILD)/,$(OBJS))
+	$(LD) -r -o $@ $(OBJS)
 
 include $(TOPDIR)/Rules.makefile
 
