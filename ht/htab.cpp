@@ -21,8 +21,6 @@ htab *htab_ctor(htab *const ht, hash_t (* hfunc)(hkey), const size_t init_cap)
         assert(hfunc);  
         int saved_errno = 0;
 
-        fprintf(stderr, "CHAR: %ld\n", (hash_t)(-1) + 1);
-        
         list *slots = (list *)calloc((hash_t)(-1) + 1, sizeof(list));
         if (!slots) {
                 plogs("Hash table slots allocation fail: %s\n", strerror(errno));
