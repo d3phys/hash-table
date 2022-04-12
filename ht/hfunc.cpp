@@ -2,13 +2,13 @@
 #include <string.h>
 
 
-hash_t crc32_hash(hkey key) 
+hash_t crc32_hash(hkey *key) 
 {
         unsigned int byte = 0, mask = 0;
         unsigned int crc = 0xFFFFFFFF;
         
-        for (int i = 0; key[i] != 0; i++) {
-                byte = key[i];
+        for (int i = 0; (*key)[i] != 0; i++) {
+                byte = (*key)[i];
                 crc = crc ^ byte;
                 
                 for (int j = 7; j >= 0; j--) {
@@ -20,53 +20,58 @@ hash_t crc32_hash(hkey key)
         return (hash_t)(~crc);
 }
 
-hash_t one_hash(hkey key)
+hash_t one_hash(hkey *key)
 {
         assert(key);
         return (hash_t)1; 
 }
 
-hash_t length_hash(hkey key)
+hash_t length_hash(hkey *key)
 {
         assert(key);
-        return (hash_t)strlen(key);
+        return (hash_t)strlen(*key);
 }
 
-hash_t first_ascii_hash(hkey key)
+hash_t first_ascii_hash(hkey *key)
 {
         assert(key);
-        return *(hash_t *)key;       
+        return *(hash_t *)(*key);       
 }
 
-hash_t sum_ascii_hash(hkey key)
+hash_t sum_ascii_hash(hkey *key)
 {
         assert(key);
 
         hash_t hash = 0;
-        while (*key)
-                hash += *key++;
+        char *cur = *key;
+        while (*cur)
+                hash += *cur++;
                 
         return hash;
 }
 
-hash_t ror_hash(hkey key)
+hash_t ror_hash(hkey *key)
 {
         assert(key);
+        
+        char *cur = *key;
         hash_t hash = 0;
-        while (*key)
-                hash = (hash_t)((hash >> 1) | (hash << 7)) ^ *(hash_t *)key++;
+        while (*cur)
+                hash = (hash_t)((hash >> 1) | (hash << 7)) ^ *(hash_t *)cur++;
                 
         return hash;
 }
 
-hash_t wsum_ascii_hash(hkey key)
+hash_t wsum_ascii_hash(hkey *key)
 {
         assert(key);
 
+        char *cur = *key;
+        size_t i = 1;
+                
         hash_t hash = 0;
-        size_t i = 1;        
-        while (*key)
-                hash += *key++ * i++;
+        while (*cur)
+                hash += *cur++ * i++;
                 
         return hash;
 }

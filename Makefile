@@ -34,7 +34,21 @@ anal: list.o ht.o io.o logs.o
 perf: list.o ht.o io.o logs.o
 	$(CXX) $(CXXFLAGS) -c -o init/init.o init/perf.cpp
 	$(CXX) $(CXXFLAGS) -o perf init/init.o list/list.o logs/logs.o ht/ht.o io/io.o
-	./perf
+
+
+cache:
+	perf stat -e instructions,L1-dcache-loads,L1-dcache-load-misses		    \
+	          -e page-faults,branch-instructions,branch-misses,alignment-faults \
+	         						      ./perf text out
+	         						      
+	perf record -e instructions,L1-dcache-loads,L1-dcache-load-misses	      \
+	            -e page-faults,branch-instructions,branch-misses,alignment-faults \
+	         						      ./perf text out
+
+common:
+	perf stat   ./perf text out
+	perf record ./perf text out
+
 
 %.o:
 	cd $(patsubst %.o,%, $@) && $(MAKE)
