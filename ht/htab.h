@@ -5,6 +5,8 @@
 
 typedef unsigned char hash_t;
 
+extern "C" hash_t crc32_sse(hkey *key);
+
 hash_t         one_hash(hkey *key);
 hash_t         ror_hash(hkey *key);
 hash_t       crc32_hash(hkey *key);
