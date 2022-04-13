@@ -1,7 +1,22 @@
 #include <htab.h>
 #include <string.h>
+#include <immintrin.h>
+#include <logs.h>
 
+hash_t crc32_hash(hkey *key) 
+{
+        int hash = 0x04C11DB7;
+$$
 
+//        fprintf(logs, "hkey address: %p %b\n", key, key);        
+        int *ik = (int *)key;
+        for (size_t i = 0; i < sizeof(hkey)/sizeof(int); i++)
+                hash = _mm_crc32_u32(hash, *ik++);        
+        $$
+        return (hash_t)(hash);
+}
+
+/*
 hash_t crc32_hash(hkey *key) 
 {
         unsigned int byte = 0, mask = 0;
@@ -18,8 +33,9 @@ hash_t crc32_hash(hkey *key)
         }
 
         return (hash_t)(~crc);
-}
+}*/
 
+/*
 hash_t one_hash(hkey *key)
 {
         assert(key);
@@ -74,4 +90,4 @@ hash_t wsum_ascii_hash(hkey *key)
                 hash += *cur++ * i++;
                 
         return hash;
-}
+}*/

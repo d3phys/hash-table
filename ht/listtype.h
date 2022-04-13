@@ -1,22 +1,22 @@
 #ifndef ENTRY_H
 #define ENTRY_H
 
-typedef char hkey[32];
+#include <immintrin.h>
+
+typedef __m256i hkey;
 
 typedef size_t hval; 
 
 typedef struct hrec {
-        hkey key = {0};
+        hkey key;
         hval val = 0;
 } item_t;
 
 const item_t FREE_DATA = {
-        .key = {0},
         .val = (hval)0xDEAD,
 };
 
 const item_t INIT_DATA = {
-        .key = {0},
         .val = 0,
 };
 

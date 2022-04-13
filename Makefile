@@ -16,8 +16,8 @@ HPATH = $(TOPDIR)/include 	 \
 
 ifeq ($(MAKELEVEL),0)
 CXX 	 = g++
-CXXFLAGS = $(addprefix -I, $(HPATH)) $(LOGSFLAGS) #$(TXFLAGS) 
-LOGSFLAGS = -D LOGS_COLORS -D LOGS_FILE='"logs.html"'
+CXXFLAGS = $(addprefix -I, $(HPATH)) $(LOGSFLAGS) -mavx2     #$(TXFLAGS) 
+LOGSFLAGS = -D LOGS_COLORS -D LOGS_FILE='"logs.html"'        # -D LOGS_DEBUG
 endif
 
 # Subdirectories #

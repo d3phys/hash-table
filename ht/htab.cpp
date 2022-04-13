@@ -8,10 +8,26 @@
 
 int compare_keys(hkey *k1, hkey *k2)
 {
-        assert(k1 && *k1);
-        assert(k2 && *k2);
+$$
+        /*return ~_mm256_movemask_epi8(
+                _mm256_cmpeq_epi64(_mm256_load_si256(k1), _mm256_load_si256(k2))
+        );*/
+
+        return ~_mm256_movemask_epi8(
+                _mm256_cmpeq_epi64(_mm256_stream_load_si256(k1), _mm256_stream_load_si256(k2))
+        );
+        /*
         
-        return strncmp(*k1, *k2, 32);
+        
+        return memcmp(k1, k2, 32);
+        //return !strncmp((char *)k1, (char *)k2, 32);
+        /*return ~(_mm256_movemask_ps(
+                _mm256_cmp_ps(
+                        _mm256_castsi256_ps(_mm256_load_si256(k1)),
+                        _mm256_castsi256_ps(_mm256_load_si256(k2)),
+                        _CMP_EQ_OQ
+                )
+        ));*/
 }
 
 htab *htab_ctor(htab *const ht, hash_t (* hfunc)(hkey *), const size_t init_cap)
@@ -19,7 +35,7 @@ htab *htab_ctor(htab *const ht, hash_t (* hfunc)(hkey *), const size_t init_cap)
         assert(ht);      
         assert(hfunc);  
         int saved_errno = 0;
-
+$$
         fprintf(stderr, "CHAR: %ld\n", (hash_t)(-1) + 1);
         
         list *slots = (list *)calloc((hash_t)(-1) + 1, sizeof(list));
@@ -27,11 +43,15 @@ htab *htab_ctor(htab *const ht, hash_t (* hfunc)(hkey *), const size_t init_cap)
                 plogs("Hash table slots allocation fail: %s\n", strerror(errno));
                 return nullptr;
         }
+$$
 
         hash_t i = 0; 
         do {
                 list *lst = construct_list(slots + i, init_cap);
+$$
+
                 if (!lst) {
+$$
                         saved_errno = errno;
                         plogs("Hash list %d allocation fail: %s\n", i, strerror(errno));
 
@@ -44,6 +64,7 @@ htab *htab_ctor(htab *const ht, hash_t (* hfunc)(hkey *), const size_t init_cap)
                         return nullptr;
                 }                
         } while (++i);
+$$
 
         ht->slots = slots;
         ht->hfunc = hfunc;
@@ -71,9 +92,12 @@ htab *htab_dtor(htab *const ht)
 hrec *htab_insert(htab *const ht, hrec *rec)
 {
         assert(ht);
-
+$$
         hash_t indx = ht->hfunc(&rec->key);
+        plogs("hash: %d\n", indx);
+        $$
         ptrdiff_t ins = list_insert_back(ht->slots + indx, rec);
+        $$
         if (!ins) {
                 plogs("Hash list insertion failed\n");
                 return nullptr;
