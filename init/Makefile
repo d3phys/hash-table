@@ -7,4 +7,3 @@
 include $(TOPDIR)/Rules.makefile
 
 ### Dependencies ###
-logs.o: logs.cpp /home/d3phys/Code/hash-table/include/logs.h

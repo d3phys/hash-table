@@ -1,26 +1,23 @@
 #ifndef ENTRY_H
 #define ENTRY_H
 
-typedef const char * hkey;
+#include <immintrin.h>
 
-typedef double *hval; 
+typedef __m256i hkey;
+
+typedef size_t hval; 
 
 typedef struct hrec {
-        hkey key = nullptr;
-        hval val = nullptr;
+        hkey key;
+        hval val = 0;
 } item_t;
 
 const item_t FREE_DATA = {
-        .key = (hkey)0xDEAD,
-        .val = (hval)0xDEAD
+        .val = (hval)0xDEAD,
 };
 
 const item_t INIT_DATA = {
-        .key = nullptr,
-        .val = nullptr
+        .val = 0,
 };
-
-int compare_hrecs(hrec rec1, hrec rec2);
-int (*const list_compare)(item_t itm1, item_t itm2) = &compare_hrecs;
 
 #endif /* ENTRY_H */
