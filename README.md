@@ -71,7 +71,11 @@ Collisions test is described on the figure below:
 
 After analyzing the figures below, we can say that 
 hashes **sum_ascii_hash**, **crc32_hash** and **ror_hash** can 
-be used as 'good' hash functions.
+be used as 'good' hash functions. 
+
+> #### Important!
+> Note that the hash comparison was done 
+> with a **fixed** hash table size of 256. And it **cannot** be extrapolated to large table sizes.
 
 <img src="img/plot.png" alt="Hash collisions" style="height: 720px; width:720px;"/>
 
@@ -380,7 +384,13 @@ After optimizations we can see the following results (around 2x boost):
 └────────────────────────────────────────────────────────────────────────────┘
 
 </pre>
- 
+
+### Final results
+
+Let me present some numerical estimates of the results of comparing the performance:
+ * Around 2x performance boost
+ * [ded32](https://github.com/ded32) performance coefficient: 
+<img src="https://render.githubusercontent.com/render/math?math=\xi = \frac{\text{performance boost}}{\text{assembly lines}}\cdot{1000} \approx \frac{2}{13}\cdot 1000 \approx 150">
 
 <!--links-->
 [Hash table]: https://en.wikipedia.org/wiki/Hash_table
