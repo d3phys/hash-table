@@ -16,7 +16,7 @@ HPATH = $(TOPDIR)/include 	 \
 
 ifeq ($(MAKELEVEL),0)
 CXX 	 = g++
-CXXFLAGS = $(addprefix -I, $(HPATH)) $(LOGSFLAGS) -mavx2 -D NDEBUG #$(TXFLAGS) 
+CXXFLAGS = $(addprefix -I, $(HPATH)) $(LOGSFLAGS) -mavx2 -O2 -D NDEBUG #$(TXFLAGS) 
 LOGSFLAGS = -D LOGS_COLORS -D LOGS_FILE='"logs.html"'        # -D LOGS_DEBUG
 endif
 
@@ -58,4 +58,3 @@ common:
 include $(TOPDIR)/Rules.makefile
 
 ### Dependencies ###
-main.o: main.cpp

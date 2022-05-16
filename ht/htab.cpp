@@ -9,13 +9,25 @@
 int compare_keys(hkey *k1, hkey *k2)
 {
 $$
-        /*return ~_mm256_movemask_epi8(
-                _mm256_cmpeq_epi64(_mm256_load_si256(k1), _mm256_load_si256(k2))
-        );*/
-
         return ~_mm256_movemask_epi8(
-                _mm256_cmpeq_epi64(_mm256_stream_load_si256(k1), _mm256_stream_load_si256(k2))
+                _mm256_cmpeq_epi64(_mm256_load_si256(k1), _mm256_load_si256(k2))
         );
+/*
+        asm (
+                "vmovdqa (%[ak1]), %%ymm0;"
+                "vmovdqa (%[ak2]), %%ymm1;"
+                "vpmovmskb %%ymm0, %[cmp];"
+                
+                : [cmp] "=r" (cmpr)
+                : [ak1] "x" (k1), [ak2] "x" (k2)
+                : "%ymm0", "%ymm1", "%rax"
+        );
+        return ~cmpr;
+*/
+        /*return ~_mm256_movemask_epi8(
+                _mm256_cmpeq_epi64(_mm256_stream_load_si256(k1), _mm256_stream_load_si256(k2))
+        );*/
+        
         /*
         
         
@@ -111,9 +123,30 @@ ptrdiff_t htab_list_find(list *const lst, hkey *key)
         assert(key);
         assert(lst);
         
+        int find = 0;
         ptrdiff_t cur = lst->head;
-        while (cur && compare_keys(&lst->nodes[cur].data.key, key))
-                cur = lst->nodes[cur].next;    
+        
+        while (cur) {
+/*
+                find = _mm256_movemask_epi8(
+                        _mm256_cmpeq_epi64(
+                                _mm256_load_si256(&lst->nodes[cur].data.key), 
+                                _mm256_load_si256(key)
+                        )
+                );
+*/
+                asm (
+                        "vpcmpeqq %[k0], %[k1], %[k0];"
+                        "vpmovmskb %[k0], %[cmp];"
+                        : [cmp] "=r" (find)
+                        : [k0] "x" (lst->nodes[cur].data.key), [k1] "x" (*key)
+                );
+
+                if (!~find)
+                        break;
+                        
+                cur = lst->nodes[cur].next;  
+        }
                 
         return cur;
 }

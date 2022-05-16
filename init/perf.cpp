@@ -109,7 +109,7 @@ int main(int argc, const char *argv[])
         } while (++s);
         
         fprintf(dest, "\n");
-        analyze_hash(dest, freq, keys, n_words,  &crc32_hash,  "crc32_hash");
+        analyze_hash(dest, freq, keys, n_words,  &crc32_sse,  "crc32_hash");
 
         fclose(dest);
         free(freq);

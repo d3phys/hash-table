@@ -3,6 +3,8 @@
 #include <immintrin.h>
 #include <logs.h>
 
+extern "C" hash_t crc32_sse(hkey *key);
+
 hash_t crc32_hash(hkey *key) 
 {
         int hash = 0x04C11DB7;
